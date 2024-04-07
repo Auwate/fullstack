@@ -9,6 +9,8 @@ services:
       MYSQL_DATABASE: django_database
       MYSQL_USER: temp_user
       MYSQL_PASSWORD: temp_pass
+    networks:
+      - mynetwork
   
   backend:
     image: backend
@@ -16,8 +18,6 @@ services:
     restart: always
     ports:
       - "8000:80"
-    links:
-      - "mysql"
     depends_on:
       - "mysql"
     environment:
@@ -27,6 +27,12 @@ services:
       - MYSQL_PASSWORD=temp_pass
     networks:
       - mynetwork
+    healthcheck:
+      test: ["CMD", "/bin/bash", "-c", "dockerize -wait tcp://mysql:3306 -timeout 10s"]
+      interval: 30s
+      timeout: 31s
+      retries: 3
+      start_period: 1s
 
   frontend:
     image: frontend
@@ -36,8 +42,16 @@ services:
       - "8080:80"
     depends_on:
       - "backend"
+    links:
+      - "backend"
     networks:
       - mynetwork
+    healthcheck:
+      test: ["CMD", "/bin/bash", "-c", "dockerize -wait tcp://backend:80 -timeout 10s"]
+      interval: 30s
+      timeout: 31s
+      retries: 3
+      start_period: 1s
 
 networks:
   mynetwork:
