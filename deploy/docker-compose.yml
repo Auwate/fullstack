@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: temp_pass
+      MYSQL_DATABASE: django_database
+      MYSQL_USER: temp_user
+      MYSQL_PASSWORD: temp_pass
+  
+  backend:
+    image: backend
+    build: ../backend/deploy
+    restart: always
+    ports:
+      - "8000:80"
+    links:
+      - "mysql"
+    depends_on:
+      - "mysql"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_DATABASE=django_database
+      - MYSQL_USER=temp_user
+      - MYSQL_PASSWORD=temp_pass
+    networks:
+      - mynetwork
+
+  frontend:
+    image: frontend
+    build: ../frontend/deploy
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - "backend"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
