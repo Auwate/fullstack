@@ -52,10 +52,18 @@ def getResponse (request):
 
     if addr: # Check if the database returned an object
 
-        client = OpenAI() # ChatGPT API
-        response = client.Completion.create ( # Send API request
+        api_key = None
+        with open('api_key', 'r') as file:
+            api_key = file.read().strip()
+
+        if not api_key:
+            return Response({"message": "API key not found! You may have forgot to add it in the api_key.txt file."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        client = OpenAI(api_key=api_key) # ChatGPT API
+
+        response = client.chat.completions.create ( # Send API request
             model="gpt-3.5-turbo",
-            prompt = "Explain to me who" + addr.body + "is and what" + addr.body + "might contain. Do not tell me that you cannot browse, I already know.",
+            messages=[{"role": "user", "content": "Explain to me who" + addr.body + "is and what" + addr.body + "might contain. Do not tell me that you cannot browse, I already know."}],
         )
         # Serialize for sending through HTTP
         serializer = OpenAISerializer(data={'response': response.choices[0].text})
