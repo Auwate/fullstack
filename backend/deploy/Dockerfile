@@ -19,8 +19,4 @@ RUN chmod +x /docker-startup.sh
 
 COPY api_key.txt /opt/backend/deploy/
 
-WORKDIR /opt/backend/deploy
-RUN chmod +r /api_key.txt
-WORKDIR /opt/backend
-
 CMD [ "/docker-startup.sh" ]
