@@ -14,6 +14,9 @@ RUN pip install -r requirements.txt
 
 EXPOSE 80
 
+COPY ./api/api_key.txt /
+RUN chmod +r /api_key.txt
+
 COPY docker-startup.sh /
 RUN chmod +x /docker-startup.sh
 
