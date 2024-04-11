@@ -22,4 +22,6 @@ WORKDIR /opt/backend/deploy
 COPY api_key.txt /
 RUN chmod +r /api_key.txt
 
+WORKDIR /opt/backend
+
 CMD [ "/docker-startup.sh" ]
