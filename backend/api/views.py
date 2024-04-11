@@ -5,6 +5,7 @@ from rest_framework import status
 from .models import Address
 from .serializers import AddressSerializer, OpenAISerializer
 from openai import OpenAI
+import os
 
 '''
 IMPORTANT: Ask GPT what the body does.
@@ -51,9 +52,10 @@ def getResponse (request):
     addr = Address.objects.last()
 
     if addr: # Check if the database returned an object
-
+        
+        api_key_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "deploy", "api_key.txt")
         api_key = None
-        with open('api_key', 'r') as file:
+        with open(api_key_path, 'r') as file:
             api_key = file.read().strip()
 
         if not api_key:
