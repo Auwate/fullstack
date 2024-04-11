@@ -36,9 +36,15 @@ In addition, `Docker` was used to standardize communications between application
 
 To get started, clone the git repository into your local filesystem using `git clone`.
 
-## IMPORTANT
+## IMPORTANT - BEFORE BUILDING
 
-This application uses the ChatGPT API, which uses "tokens". For this application to run, you must put your API key into api_key.txt in the backend directory.
+This application uses the ChatGPT API, which uses "tokens". For this application to run, you must put your API key into api_key.txt in the backend deploy directory.
+
+Once you are in the `backend/deploy` directory you can add your api key by using either command: 
+- echo "{INSERT_API_KEY_HERE}" >> api_key.txt
+- sh -c 'echo "{INSERT_API_KEY_HERE}" >> api_key.txt'
+
+## ONLY DO THIS PART AFTER ADDING API KEY
 
 `cd` into the /deploy folder, which is where the `docker-compose.yml` file lives. You can then run the following command:
 ```
@@ -55,10 +61,14 @@ If you would like to stop the application, press `ctrl+c` or:
 docker-compose down
 ```
 
+# Images
+
+![base_screen_1](https://github.com/Auwate/fullstack/assets/111798627/c8bb08b1-595d-4acc-900a-89c8f2ba40ec)
+**Description**: This is the frontend webpage you are greeted with upon starting the application.
+
+![queries_and_response](https://github.com/Auwate/fullstack/assets/111798627/e7dbcba7-57cc-40f4-b297-ae61ad6f1fc8)
+**Description**: This is a sample webpage you might see after submitting multiple requests.
+
 # To Do
-- Fix Docker-Compose functionality
-    - Check frontend's ports
-    - Do a full removal of all docker builder caches
-- Add Streamlit functionality to grab all recent queries and store them in the sidebar
+- Work on documentation
 - Work on web scraper
-- Add ChatGPT API
